@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+ use App\Http\Controllers\PostController;
 use App\Models\Post;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,25 +20,17 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::view('welcome', 'welcome');
-
-Route::get('/develop', function(){
-    return 'Welcome to Developments';
+Route::view('/welcome2', 'welcome')->name('welcome');
+Route::get('/develop', function () {
+    return 'Welcome to developer';
 })->name('develop.index');
 
-Route::get('/develop/{develops}',function($develops){
-    if($develops=='5'){
-        return redirect()-> route('develop.index');
-    }else{
-        return 'Detalles del desarrollador ' . $develops;
+Route::get('/develop/{develops}', function ($develops){
+    if ($develops === '5'){
+        return redirect()->route('develop.index');
     }
+    return 'Detalles del desarrollar'. $develops;
 });
-
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-//     //Tambien se puede ejecutar despues de devolverlo mostrar la vista
-// })->middleware('auth')->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');
@@ -46,9 +39,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Ruta personalizada para llamar la función de index y mostrar los posteos
-Route::get('/posts',[PostController::class,'index'])->name('posts.index');
-// Ruta personalizada para crear el registro en la BD de Posts.
-Route::post('/post', [PostController::class, 'store'])->name('posts.store');
+//ruta personalizada para llamar la funcion de index y mostrar los posteos
+Route::get('/posts',[PostController::class, 'index'])->name('posts.index');
+//ruta personalizada para crear el registro en la BD de posts
+Route::post('/posts',[PostController::class, 'store'])->name('posts.store');
 
+Route::get('/posts/{post}/edit',[App\Http\Controllers\PostController::class, 'edit'])->name('posts.edit');
+//ruta para update
+Route::patch('/posts/{post}',[App\Http\Controllers\PostController::class, 'update'])->name('posts.update');
+//ruta para eliminar
+Route::delete('/posts/{post}',[App\Http\Controllers\PostController::class, 'destroy'])->name('posts.destroy');
 require __DIR__.'/auth.php';

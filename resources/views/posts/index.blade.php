@@ -71,6 +71,7 @@
                         {{$post->message}}
                         <p>
                     </div>
+                    
                     @can('update', $post)
                     <x-dropdown>
                         <x-slot name="trigger">
